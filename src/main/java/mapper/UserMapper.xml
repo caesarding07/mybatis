@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.UserMapper">
+    <!--resultType直接写对象的全类名 这里返回类型是javaBean -->
+    <select id="selectById" parameterType="java.lang.Integer" resultType="domain.User">
+        select * from users where id=#{userId,jdbcType=INTEGER}
+    </select>
+    <select id="selectListByXML" resultType="domain.User">
+        select * from users
+    </select>
+    <select id="selectByMobileAndUsernameLike" resultType="domain.User">
+        select * from users where mobile like concat(#{mobile},'%') and username like concat('%',#{username},'%')
+    </select>
+    <insert id="add" parameterType="domain.User">
+        insert into `mybatis_db`.`users`(`username`,`password`,`mobile`)
+        values
+        (#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR})
+    </insert>
+</mapper>

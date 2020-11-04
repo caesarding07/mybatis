@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="">
+<!--        这些属性可以在外部进行配置，并可以进行动态替换-->
+        <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+<!--        jdbc:mysql:///mybatis_db是jdbc:mysql://localhost:3306/mybatis_db的简写-->
+        <property name="url" value="jdbc:mysql://localhost:3306/mybatis_db?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false"/>
+        <property name="username" value="root"/>
+        <property name="password" value=""/>
+    </properties>
+
+    <settings>
+        <!--    是否开启驼峰命名自动映射-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+<!--        <setting name="logImpl" value="LOG4J"/>-->
+    </settings>
+<!--    可以配置多个环境，但每个 SqlSessionFactory 实例只能选择一种环境。-->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC">
+                <property name="..." value="..."/>
+            </transactionManager>
+            <!-- 配置数据源-->
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+<!--    映射器mappers：设置对应的数据库操作-->
+    <!-- 使用相对于类路径的资源引用 -->
+    <mappers>
+        <mapper resource="mapper/UserMapper.xml"/>
+    </mappers>
+</configuration>
