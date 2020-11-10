@@ -16,4 +16,41 @@
         values
         (#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR})
     </insert>
+    <delete id="deleteByIdOrUsername" parameterType="java.util.Map">
+        delete from `mybatis_db`.`users` where id=#{id} or username=#{username}
+    </delete>
+
+    <delete id="deleteByGreaterId" parameterType="java.lang.Integer">
+        delete from `mybatis_db`.`users` where id &gt; #{id}
+    </delete>
+    <!--resultType直接写对象的全类名 这里返回类型是javaBean -->
+    <select id="selectById" parameterType="java.lang.Integer" resultType="domain.User">
+        select * from users where id=#{userId,jdbcType=INTEGER}
+    </select>
+    <select id="selectListByXML" resultType="domain.User">
+        select * from users
+    </select>
+    <select id="selectByMobileAndUsernameLike" resultType="domain.User">
+        select * from users where mobile like concat(#{mobile},'%') and username like concat('%',#{username},'%')
+    </select>
+    <select id="selectByIdWithResultMap" resultMap="UserResultMap">
+        select id,username,password,mobile from users where id = #{id}
+    </select>
+    <update id="updateById" parameterType="domain.User">
+        update `mybatis_db`.`users`
+        set username = #{username,jdbcType=VARCHAR},
+        password = #{password,jdbcType=VARCHAR},
+        mobile = #{mobile,jdbcType=VARCHAR}
+        where id = #{id}
+    </update>
+    <!--选择性更新-->
+    <update id="updateSelective" parameterType="domain.User">
+        update `mybatis_db`.`users`
+        <trim prefix="set" suffixOverrides=",">
+            <if test="username!=null">username = #{username,jdbcType=VARCHAR},</if>
+            <if test="password!=null">password = #{password,jdbcType=VARCHAR},</if>
+            <if test="mobile!=null">mobile = #{mobile,jdbcType=VARCHAR},</if>
+        </trim>
+        where id=#{id}
+    </update>
 </mapper>
